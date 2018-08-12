@@ -147,4 +147,28 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class LinkedRingToLine(var i : Int) {
+
+        private var root : LRLNode = LRLNode(0)
+        private var curr : LRLNode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            curr.update {i, scl ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(i, scl)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
