@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.linkedringtolineview
  * Created by anweshmishra on 13/08/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.content.Context
 import android.graphics.Paint
@@ -192,6 +193,14 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
             lrtl.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : LinkedRingToLineView {
+            val view : LinkedRingToLineView = LinkedRingToLineView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
