@@ -21,15 +21,16 @@ fun Canvas.drawLRLNode(i : Int, scale : Float, paint : Paint) {
     val sc1 : Float = Math.min(0.5f, scale) * 2
     val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
     val gap : Float = w / nodes
+    paint.style = Paint.Style.STROKE
     paint.strokeWidth = Math.min(w, h) / 60
     paint.strokeCap = Paint.Cap.ROUND
     paint.color = Color.parseColor("#4CAF50")
     save()
-    translate(gap/2 + (i * gap) * sc2, h / 2 * sc2)
+    translate(gap/2 + (i * gap) * sc1, gap / 2 + (h / 2 - gap / 2) * sc1)
     val path : Path = Path()
     for (j in 0..360) {
         val x : Float = (gap / 2) * Math.cos(j * Math.PI/180).toFloat()
-        val y : Float = (gap / 2) * sc1 * Math.sin(j * Math.PI/180).toFloat()
+        val y : Float = (gap / 2) * (1 -sc2) * Math.sin(j * Math.PI/180).toFloat()
         if (j == 0) {
             path.moveTo(x, y)
         } else {
