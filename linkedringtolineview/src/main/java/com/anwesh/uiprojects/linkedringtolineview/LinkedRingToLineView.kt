@@ -45,6 +45,7 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val renderer : Renderer = Renderer(this)
+    var animationListener : AnimationListener? = null
 
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
@@ -57,6 +58,10 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    fun addAnimationListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        animationListener = AnimationListener(onComplete, onReset)
     }
 
     data class State(var scale : Float = 0f, var prevScale : Float = 0f, var dir : Float = 0f) {
@@ -186,6 +191,10 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
             animator.animate {
                 lrtl.update {i, scl ->
                     animator.stop()
+                    when (scl) {
+                        0f -> view.animationListener?.onReset?.invoke(i)
+                        1f -> view.animationListener?.onComplete?.invoke(i)
+                    }
                 }
             }
         }
@@ -204,4 +213,6 @@ class LinkedRingToLineView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class AnimationListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
